@@ -82,7 +82,12 @@
 					$attrs['value'] = $field_value;
 					return form_textarea($attrs);
 				case 'noinput':
-					return '<span class="no-input">'.nl2br($field_value).'</span>';
+				case 'static':
+					if ($values = $this->get_config($field, 'values')) {
+						return '<span class="no-input">'.nl2br($values[$field_value]).'</span>';
+					} else {
+						return '<span class="no-input">'.nl2br($field_value).'</span>';
+					}
 				default:
 					$attrs['value'] = $field_value;
 					return form_input($attrs);
@@ -104,7 +109,7 @@
 		private function sanitize_input($data) {
 			$fields = $this->get_fields();
 			foreach($fields as $k => $field) {
-				if ($this->get_config($field, 'type') == 'noinput') unset($fields[$k]);
+				if ($this->get_config($field, 'type') == 'noinput' || $this->get_config($field, 'type') == 'static') unset($fields[$k]);
 			}
 			foreach($data as $k => $v) {
 				if (!in_array($k, $fields)) {
