@@ -19,9 +19,11 @@
 			$model = $this->get_model_name();
 			$CI->load->model($model);
 			$this->model = $CI->$model;
-			foreach($this->config[$this->table] as $k => $v) {
-				if (isset($v['type']) && $v['type'] == 'date') {
-					$this->set_config($k, 'mask', '99/99/9999');
+			if (isset($this->config[$this->table]) && is_array($this->config[$this->table])) {
+				foreach($this->config[$this->table] as $k => $v) {
+					if (isset($v['type']) && $v['type'] == 'date') {
+						$this->set_config($k, 'mask', '99/99/9999');
+					}
 				}
 			}
 		}
